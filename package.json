@@ -1,0 +1,14 @@
+{
+  "name": "power-station-pipeline-viewer",
+  "version": "1.0.0",
+  "private": true,
+  "description": "局域网动力站管道轻量化模型审阅平台",
+  "scripts": {
+    "prepare-assets": "node scripts/prepare-cesium.mjs",
+    "build": "node scripts/build-model-index.mjs && node scripts/build-weld-status.mjs && node scripts/prepare-cesium.mjs",
+    "start": "node server.mjs"
+  },
+  "dependencies": {
+    "cesium": "1.128.0"
+  }
+}

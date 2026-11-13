@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#081421" />
+    <title>动力站轻量化模型管理平台</title>
+    <script>window.CESIUM_BASE_URL = '/cesium/';</script>
+    <link rel="stylesheet" href="/cesium/Widgets/widgets.css" />
+    <link rel="stylesheet" href="/app.css" />
+  </head>
+  <body>
+    <main class="application-shell">
+      <section id="cesiumContainer" aria-label="动力站管道三维模型"></section>
+      <div class="atmosphere" aria-hidden="true"></div>
+
+      <header class="topbar">
+        <div class="brand">
+          <span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i></span>
+          <div>
+            <p class="eyebrow">DIGITAL ASSET REVIEW</p>
+            <h1>动力站 · 管道模型</h1>
+          </div>
+        </div>
+        <div class="topbar-status">
+          <span class="pulse"></span>
+          <span id="loadState">正在连接模型数据</span>
+        </div>
+      </header>
+
+      <aside class="tree-panel panel">
+        <div class="panel-heading tree-heading">
+          <div><p class="eyebrow">MODEL STRUCTURE</p><h2>模型结构树</h2></div>
+          <span id="treeCount" class="tree-count">--</span>
+        </div>
+        <div class="model-card">
+          <div class="model-icon">3D</div>
+          <div>
+            <strong>动力站管道</strong>
+            <p><code>tileset.json</code></p>
+          </div>
+          <span class="state-chip" id="modelState">加载中</span>
+        </div>
+        <label class="tree-search"><span>⌕</span><input id="treeSearch" type="search" placeholder="搜索构件、管线或编号" /></label>
+        <div id="treeRoot" class="tree-root" role="tree" aria-label="模型结构树"><p class="tree-empty">正在解析模型结构…</p></div>
+        <div class="tree-footer">点击条目：高亮并定位 · 点击模型：同步结构树</div>
+      </aside>
+
+      <aside class="tools-panel panel">
+        <div class="panel-heading compact"><p class="eyebrow">REVIEW TOOLS</p><h2>审阅工具</h2></div>
+        <div class="tool-grid">
+          <button class="tool-button active" type="button" data-action="home"><span>⌂</span>初始视角</button>
+          <button class="tool-button" type="button" data-action="fit"><span>⊙</span>适应模型</button>
+          <button class="tool-button" type="button" data-action="wireframe"><span>◇</span>线框叠加</button>
+          <button class="tool-button" type="button" data-action="background"><span>◐</span>切换背景</button>
+          <button class="tool-button active" type="button" data-action="toggle-dim"><span>◌</span>其他虚化</button>
+          <button class="tool-button" id="clearSelection" type="button" data-action="clear-selection"><span>×</span>取消选中</button>
+          <button class="tool-button" type="button" data-action="toggle-weld-progress"><span>◉</span>焊接状态</button>
+          <button class="tool-button" type="button" data-action="hide-unselected"><span>⊘</span>隐藏未选中</button>
+          <button class="tool-button" type="button" data-action="hide-selected"><span>◎</span>隐藏所选中</button>
+        </div>
+        <p class="tip">左键旋转 · 右键平移 · 滚轮缩放（选中后仍可平移）</p>
+      </aside>
+
+      <aside class="property-panel panel">
+        <div class="panel-heading">
+          <p class="eyebrow">SCENE STATUS</p>
+          <h2>运行状态</h2>
+        </div>
+        <div class="metric-row"><span>当前帧率</span><strong id="fps">-- FPS</strong></div>
+        <div class="metric-row"><span>加载队列</span><strong id="pendingTiles">--</strong></div>
+        <div class="metric-row"><span>渲染质量</span><strong>自适应 LOD</strong></div>
+        <div class="quality-control">
+          <label for="quality">模型精度 <output id="qualityValue">均衡</output></label>
+          <input id="quality" type="range" min="8" max="48" value="24" step="4" />
+          <div class="range-labels"><span>高</span><span>流畅</span></div>
+        </div>
+        <div class="progress-legend" aria-label="焊接进度图例"><span><i class="legend-welded"></i>已焊接</span><span><i class="legend-pending"></i>未焊接</span></div>
+        <div class="divider"></div>
+        <div class="property-heading"><p class="eyebrow">EP3D PROPERTIES</p><h2 id="selectedTitle">未选择构件</h2></div>
+        <p id="selectedDetail" class="selection-detail">从结构树或三维模型中选择构件</p>
+        <div id="propertyList" class="property-list"><p class="property-empty">焊点编号、元件编号、材料等 EP3D 属性将在此显示。</p></div>
+        <div class="selected-object" id="selectionPanel" hidden>
+          <p class="eyebrow">SELECTION</p>
+          <strong id="selectionPath">构件</strong>
+        </div>
+      </aside>
+
+      <footer class="bottom-bar">
+        <span class="legend-dot"></span>
+        <span>本地 3D Tiles 服务</span>
+        <span class="separator"></span>
+        <span id="performanceLabel">性能监测已开启</span>
+        <span class="separator"></span>
+        <span id="clock"></span>
+      </footer>
+
+      <div class="loading-screen" id="loadingScreen">
+        <div class="loader-orbit"><span></span></div>
+        <p>正在加载动力站管道模型</p>
+        <small id="loadingHint">初始化三维引擎…</small>
+      </div>
+
+      <div id="errorToast" class="error-toast" role="alert" hidden></div>
+    </main>
+    <script src="/cesium/Cesium.js"></script>
+    <script src="/app.js"></script>
+  </body>
+</html>

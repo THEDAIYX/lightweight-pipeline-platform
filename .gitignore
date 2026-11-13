@@ -1,0 +1,8 @@
+node_modules/
+.git2/
+.cache/
+.cache-wps-share.html
+.codex/
+.agents/
+*.log
+轻量化模型管理平台开发(1)/
